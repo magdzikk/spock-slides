@@ -116,20 +116,33 @@ class JugMeetingSpec extends Specification {
 	<section class="slide">
 		<h2>Co nam daje zepsuty test</h2>
 		<pre class="brush: groovy">
-TODO: przykład
+Condition not satisfied:
+
+sms.content == "Hello Mom\nI need money quickly\nThanks and CU later"
+|   |       |
+|   |       false
+|   |       6 differences (88% similarity)
+|   |       Hello Mom\nI need money quickly\nThanks and CU(------)
+|   |       Hello Mom\nI need money quickly\nThanks and CU( later)
+|   Hello Mom
+|   I need money quickly
+|   Thanks and CU
+SmsEmail[content=Hello Mom\nI need money quickly\nThanks and CU,recipients=[123123123],
+sender=,username=user@gmail.com,password=secret,replyTo=mailto:replyTo@gmail.com]
 		</pre>
 	</section>
 
 	<section class="slide">
 		<h2>Piękno Grooviego</h2>
 		<ul>
-			<li>kod Javy jest poprawnym kodem Grooviego</li>
+			<li>kod Javy jest zazwyczaj poprawnym kodem Grooviego</li>
 			<li>nie wymaga średników</li>
-			<li>typ wystarczy zdefiniować raz</li>
-			przykład
-			<li>świetna dokumentacja oparta na przykładach (link)</li>
+			<li>nie wymaga podwójnego typowania</li>
+			<pre class="brush: groovy">def name = new ComplicatedLongClassName()</pre>
+			<li>== oznacza equals</li>
 			<li>wbudowane wsparcie dla kolekcji</li>
-			<li>TODO: co jeszcze?</li>
+			<pre class="brush: groovy">def list = ["one", "two"]</pre>
+			<li>świetna <a href="http://groovy.codehaus.org/User+Guide">dokumentacja</a> oparta na przykładach</li>
 		</ul>
 	</section>
 
@@ -194,33 +207,27 @@ def userDao = Mock(UserDao)
 def userCache = Mock(UserCache)
 
 def "should use cache instead of dao"() {
-    when:
-    app.findUser("John")
+  when:
+  app.findUser("John")
 
-    then:
-    1 * userCache.find("John")
-		0 * userDao.find(_)
+  then:
+  1 * userCache.find("John")
+  0 * userDao.find(_)
 } 
 
 def "should return user"() {
-		given:
-		userDao.getSkills("John") >> ["Java", "Groovy", "Spock"]
+  given:
+  userDao.getSkills("John") >> ["Java", "Groovy", "Spock"]
 
-		when:
-		def john = app.findUser("John")
+  when:
+  def john = app.findUser("John")
 
-		then:
-		john.skills.contains("Spock")	
+  then:
+  john.skills.contains("Spock")	
 } </pre>
 	</section>
 
 	<section class="slide">
-	</section>
-
-	<section class="slide">
-		<h2>Co dalej</h2>
-		<ul>
-			<li>Dokumentacja: <a href="https://code.google.com/p/spock/">dotychczasowa</a> i <a href="http://spock-framework.readthedocs.org/en/latest/index.html">nowa</a>
 	</section>
 
   <!-- End slides. -->
