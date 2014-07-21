@@ -39,22 +39,26 @@
 
 </head>
 <body>
-  <div class="deck-container">
+	<div class="deck-container">
 
-  <!-- Begin slides. Just make elements with a class of slide. -->
+	<!-- Begin slides. Just make elements with a class of slide. -->
 
-  <section class="slide">
-	<h1>Spock<br/>
-	<p style="font-size: 30px">Jak pisać testy z dobrą fabułą</p></h1>
-  </section>
+	<section class="slide">
+	  <h1>Spock<br/>
+	  <p style="font-size: 30px">Testy z fabułą</p></h1>
+	</section>
 
-  <section class="slide">
+	<section class="slide">
 	<h2>Dlaczego Spock?</h2>
-	<ul>
-	  <li>czytelny i zwięzły</li>
-	  <li>niski próg wejścia</li>
-	  <li>wygodny</li>
-	</ul>
+	  <ul>
+		<li>czytelny i zwięzły</li>
+		<li>niski próg wejścia</li>
+		<li>wygodny</li>
+		<li>pasuje do Javy</li>
+	  </ul>
+	</section>
+
+	<section class="slide">
 	<pre class="brush: groovy">
 class JugMeetingSpec extends Specification {
 
@@ -147,7 +151,23 @@ sender=,username=user@gmail.com,password=secret,replyTo=mailto:replyTo@gmail.com
 	</section>
 
 	<section class="slide">
-		<h2>Dane tabelaryczne</h2>
+		<h2>Zasilanie testów danymi</h2>
+		<h3>Życie przed Spockiem - @DataProvider z TestNG</h3>
+		<pre class="brush: java">
+@DataProvider
+private Object[][] testData() {
+	return new Object[][] {
+		new Object[]{"", "", "", "", MISSING_REQUIRED_PARAMETER},
+		new Object[]{"invalid id", "", "", "", USER_DOES_NOT_EXIST},
+		new Object[]{testUserId, "", "invalid", "", INVALID_PARAMETER_VALUE},
+		new Object[]{notMyUser, "", "", "", NO_RIGHTS_TO_CUSTOMER}
+	};
+}</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Zasilanie testów danymi</h2>
+		<h3>Jak to się robi w Spocku</h3>
 		<pre class="brush: groovy">
 @Unroll
 def "Should return #expectedStatus for #userId, #email, #phoneNumber"() 
@@ -164,8 +184,12 @@ def "Should return #expectedStatus for #userId, #email, #phoneNumber"()
   testUserId   | ""        | "invalid"   || INVALID_PARAMETER_VALUE
   notMyUser    | ""        | ""          || NO_RIGHTS_TO_CUSTOMER
 }</pre>
-	TODO: dodać wynik z IntelliJ
-	TODO: pokazać jak to wygląda z @DataProvider (może najpierw)
+	</section>
+
+	<section class="slide">
+		<h2>Zasilanie testów danymi</h2>
+		<h3>Wynik dzięki @Unroll</h3>
+		<img src="unroll.png"></img>
 	</section>
 
 	<section class="slide">
@@ -228,6 +252,21 @@ def "should return user"() {
 	</section>
 
 	<section class="slide">
+	<h2>Mocki</h2>
+	<h3>Sprawdzanie wywołań, liczebności, parametrów, ...</h3>
+	<pre class="brush: groovy">
+(_..3) * zoo.receive("zebra")
+1 * zoo./re.*/("surprise")
+(1.._) * zoo.receive(_) 
+2 * zoo.receive(_ as Bird) 
+1 * zoo.receive(!null) 
+0 * zoo.receive({ it.age() > 3 })
+1 * process.invoke("ls", "-a", _, !null, { ["abcd"].contains(it) })
+</pre>
+	</section>
+
+	<section class="slide">
+	  <h1>TODO: ostatni slajd</h1>
 	</section>
 
   <!-- End slides. -->
