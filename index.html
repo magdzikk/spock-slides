@@ -28,55 +28,225 @@
 
   <!-- Required Modernizr file -->
   <script src="deck.js/modernizr.custom.js"></script>
+
+  <!-- SyntaxHighlighter -->
+  <script src="syntaxhighlighter/scripts/shCore.js" type="text/javascript"></script>
+  <script src="syntaxhighlighter/scripts/shBrushGroovy.js" type="text/javascript"></script>
+  <script src="syntaxhighlighter/scripts/shBrushJava.js" type="text/javascript"></script>
+
+  <link href="syntaxhighlighter/styles/shCore.css" rel="stylesheet" type="text/css" />
+  <link href="syntaxhighlighter/styles/shThemeEmacs.css" rel="stylesheet" type="text/css" />
+
 </head>
 <body>
   <div class="deck-container">
 
-    <!-- Begin slides. Just make elements with a class of slide. -->
+  <!-- Begin slides. Just make elements with a class of slide. -->
 
-    <section class="slide">
-      <h1>Spock<br/>
-	  <p style="font-size: 30px">Jak pisać testy z dobrą fabułą</p></h1>
-    </section>
+  <section class="slide">
+	<h1>Spock<br/>
+	<p style="font-size: 30px">Jak pisać testy z dobrą fabułą</p></h1>
+  </section>
 
-    <section class="slide">
-	  <h2>Dlaczego Spock?</h2>
-	  <ul>
-	  	<li>czytelny i zwięzły</li>
-		<li>niski próg wejścia</li>
-		<li>wygodny</li>
-	  </ul>
-	  <pre>bla</pre>
-    </section>
+  <section class="slide">
+	<h2>Dlaczego Spock?</h2>
+	<ul>
+	  <li>czytelny i zwięzły</li>
+	  <li>niski próg wejścia</li>
+	  <li>wygodny</li>
+	</ul>
+	<pre class="brush: groovy">
+class JugMeetingSpec extends Specification {
 
-    <section class="slide">
-      <h1>Here</h1>
-    </section>
+  def jugMeeting = new Meeting(["Spock", "Gerrit"])
+  def attendee = new Person("Mścibór")
 
-    <!-- End slides. -->
+  def "should make Mścibór's life better"() {
+	given:
+	attendee.setKnownFrameworks(["JUnit", "Mockito"])
+	attendee.setMoodPercent(20)
+   
+	when:
+	attendee.attend(jugMeeting)
 
-    <!-- Begin extension snippets. Add or remove as needed. -->
+	then:
+	attendee.moodPercent > 80
+	attendee.knownFrameworks.contains("Spock")
+	attendee.isAwake
+  }
+} </pre>
+  </section>
 
-    <!-- deck.navigation snippet -->
-    <div aria-role="navigation">
-      <a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
-      <a href="#" class="deck-next-link" title="Next">&#8594;</a>
-    </div>
+  <section class="slide">
+	<h2>Składniki specyfikacji</h2>
+	<pre class="brush: groovy">
+class JugMeetingSpec extends Specification {
 
-    <!-- deck.status snippet -->
-    <p class="deck-status" aria-role="status">
-      <span class="deck-status-current"></span>
-      /
-      <span class="deck-status-total"></span>
-    </p>
+  def jugMeeting = new Meeting(["Spock", "Gerrit"])
+  def attendee = new Person("Mścibór")
 
-    <!-- deck.goto snippet -->
-    <form action="." method="get" class="goto-form">
-      <label for="goto-slide">Go to slide:</label>
-      <input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
-      <datalist id="goto-datalist"></datalist>
-      <input type="submit" value="Go">
-    </form>
+	@Shared
+	def barcelona = new Pub("Barcelona Sport Pub")	
+
+	def setup() { ... }
+	def cleanup() { ... }
+	def setupSpec() { ... }
+	def cleanupSpec() { ... }
+
+	</pre>
+  </section>
+
+  <section class="slide">
+		<h2>Bloki</h2>
+		<div style="float: left; margin-right: 150px">
+			<ul>
+				<li>given/setup</li>
+				<li>when</li>
+				<li>then</li>
+				<li>expect</li>
+				<li>cleanup</li>
+				<li>where</li>
+			</ul>
+		</div>
+		<div style="float: left">
+			<img src="Blocks2Phases.png" style="float:right"/>
+		</div>
+  </section>
+
+	<section class="slide">
+		<h2>Co nam daje zepsuty test</h2>
+		<pre class="brush: groovy">
+TODO: przykład
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Piękno Grooviego</h2>
+		<ul>
+			<li>kod Javy jest poprawnym kodem Grooviego</li>
+			<li>nie wymaga średników</li>
+			<li>typ wystarczy zdefiniować raz</li>
+			przykład
+			<li>świetna dokumentacja oparta na przykładach (link)</li>
+			<li>wbudowane wsparcie dla kolekcji</li>
+			<li>TODO: co jeszcze?</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Dane tabelaryczne</h2>
+		<pre class="brush: groovy">
+@Unroll
+def "Should return #expectedStatus for #userId, #email, #phoneNumber"() 
+  when:
+  def response = updateUserByRest(userId, email, phoneNumber)
+
+  then:
+  response == expectedStatus.toString()
+
+  where:
+  userId       | email     | phoneNumber || expectedStatus
+  ""           | ""        | ""          || MISSING_REQUIRED_PARAMETER
+  "invalid id" | ""        | ""          || USER_DOES_NOT_EXIST
+  testUserId   | ""        | "invalid"   || INVALID_PARAMETER_VALUE
+  notMyUser    | ""        | ""          || NO_RIGHTS_TO_CUSTOMER
+}</pre>
+	TODO: dodać wynik z IntelliJ
+	TODO: pokazać jak to wygląda z @DataProvider (może najpierw)
+	</section>
+
+	<section class="slide">
+		<h2>Sprawdzanie wyjątków</h2>
+		<h3>Życie przed Spockiem:</h3>
+		<ul>
+			<li>@Test(expected = IllegalArgumentException.class)</li>
+			<li>try-fail-catch</li>
+		<pre class="brush: java">
+@Test
+public void testForExceptions() {
+    try{
+        zoo.acceptAnimal(cat);
+
+        fail("expected IllegalArgumentException");
+
+    } catch(IllegalArgumentException e){
+        //ignore, this exception is expected.
+    }</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Sprawdzanie wyjątków</h2>
+		<h3>A w Spocku:</h3>
+		<pre class="brush: groovy">
+when:
+zoo.acceptAnimal(cat)
+
+then:
+def e = thrown(IllegalArgumentException)
+e.message.contains("wild animals only")
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Interakcje - mocki i stuby</h2>
+		<pre class="brush: groovy">
+def userDao = Mock(UserDao)
+def userCache = Mock(UserCache)
+
+def "should use cache instead of dao"() {
+    when:
+    app.findUser("John")
+
+    then:
+    1 * userCache.find("John")
+		0 * userDao.find(_)
+} 
+
+def "should return user"() {
+		given:
+		userDao.getSkills("John") >> ["Java", "Groovy", "Spock"]
+
+		when:
+		def john = app.findUser("John")
+
+		then:
+		john.skills.contains("Spock")	
+} </pre>
+	</section>
+
+	<section class="slide">
+	</section>
+
+	<section class="slide">
+		<h2>Co dalej</h2>
+		<ul>
+			<li>Dokumentacja: <a href="https://code.google.com/p/spock/">dotychczasowa</a> i <a href="http://spock-framework.readthedocs.org/en/latest/index.html">nowa</a>
+	</section>
+
+  <!-- End slides. -->
+
+  <!-- Begin extension snippets. Add or remove as needed. -->
+
+  <!-- deck.navigation snippet -->
+  <div aria-role="navigation">
+	<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+	<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+  </div>
+
+  <!-- deck.status snippet -->
+  <p class="deck-status" aria-role="status">
+	<span class="deck-status-current"></span>
+	/
+	<span class="deck-status-total"></span>
+  </p>
+
+  <!-- deck.goto snippet -->
+  <form action="." method="get" class="goto-form">
+	<label for="goto-slide">Go to slide:</label>
+	<input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+	<datalist id="goto-datalist"></datalist>
+	<input type="submit" value="Go">
+  </form>
 
     <!-- End extension snippets. -->
   </div>
@@ -97,6 +267,8 @@
   $(function() {
     $.deck('.slide');
   });
+
+  SyntaxHighlighter.all()
 </script>
 </body>
 </html>
