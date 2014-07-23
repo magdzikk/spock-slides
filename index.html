@@ -89,15 +89,14 @@ class JugMeetingSpec extends Specification {
   def jugMeeting = new Meeting(["Spock", "Gerrit"])
   def attendee = new Person("Mścibór")
 
-	@Shared
-	def barcelona = new Pub("Barcelona Sport Pub")	
+  @Shared
+  def barcelona = new Pub("Barcelona Sport Pub")	
 
-	def setup() { ... }
-	def cleanup() { ... }
-	def setupSpec() { ... }
-	def cleanupSpec() { ... }
-
-	</pre>
+  def setup() { ... }
+  def cleanup() { ... }
+  def setupSpec() { ... }
+  def cleanupSpec() { ... }
+} </pre>
   </section>
 
   <section class="slide">
@@ -146,7 +145,7 @@ sender=,username=user@gmail.com,password=secret,replyTo=mailto:replyTo@gmail.com
 			<li>== oznacza equals</li>
 			<li>wbudowane wsparcie dla kolekcji</li>
 			<pre class="brush: groovy">def list = ["one", "two"]</pre>
-			<li>świetna <a href="http://groovy.codehaus.org/User+Guide">dokumentacja</a> oparta na przykładach</li>
+			<li>świetna <a href="http://groovy.codehaus.org/User+Guide" target="_blank">dokumentacja</a> oparta na przykładach</li>
 		</ul>
 	</section>
 
@@ -229,6 +228,7 @@ e.message.contains("wild animals only")
 		<pre class="brush: groovy">
 def userDao = Mock(UserDao)
 def userCache = Mock(UserCache)
+def app = new Application(userDao, userCache)
 
 def "should use cache instead of dao"() {
   when:
@@ -262,11 +262,21 @@ def "should return user"() {
 1 * zoo.receive(!null) 
 0 * zoo.receive({ it.age() > 3 })
 1 * process.invoke("ls", "-a", _, !null, { ["abcd"].contains(it) })
+  
 </pre>
 	</section>
 
 	<section class="slide">
-	  <h1>TODO: ostatni slajd</h1>
+	  <h2>Pytania?</h2>
+	  <pre class="brush: groovy">
+when:
+presentation.finish()
+
+then:
+attendee.isAwake
+attendee.wantsToTrySpock
+attendee.questions > 0
+	   </pre>
 	</section>
 
   <!-- End slides. -->
